@@ -9,6 +9,7 @@ window.Win10 = {
     },
     _countTask: 0,
     _newMsgCount:0,
+    _home_path: '/os/win10/',
     _animated_classes:[],
     _animated_liveness:0,
     _switchMenuTooHurry:false,
@@ -216,6 +217,9 @@ window.Win10 = {
         Win10._checkTop();
         Win10._countTask--;//回退countTask数
         Win10._renderBar();
+    },
+    init: function(){
+        Win10._init();
     },
     _init:function () {
 
@@ -710,13 +714,13 @@ window.Win10 = {
             closeBtn: 1, //不显示关闭按钮
             anim: 2,
             skin: 'layui-layer-molv',
-            title: 'WIN10-UI v1.1.2',
+            title: 'AsgcOs ' + os.version,
             shadeClose: true, //开启遮罩关闭
             area: ['420px', '240px'], //宽高
             content: '<div style="padding: 10px;font-size: 12px">' +
-            '<p>支持组件:layer、jquery、animated.css、font-awesome</p>' +
-            '<p>尤里2号©版权所有</p>' +
-            '<p>作者邮箱:yuri2peter@qq.com</p>' +
+            '<p>傲世孤尘版权所有</p>' +
+            '<p>作者邮箱:1052045476@qq.com</p>' +
+            '<p>交流群:527393872</p>' +
             '</div>'
         });
     },
@@ -746,9 +750,3 @@ window.Win10 = {
         Win10._handleReady=handle;
     }
 };
-
-
-$(function () {
-    Win10._init();
-    Win10._handleReady();
-});

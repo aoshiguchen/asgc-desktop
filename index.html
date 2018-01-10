@@ -4,138 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-    <title>ASGC桌面</title>
-    <link rel='Shortcut Icon' type='image/x-icon' href='./img/windows.ico'>
-    <script type="text/javascript" src="./js/jquery-2.2.4.min.js"></script>
-    <link href="./css/animate.css" rel="stylesheet">
-    <script type="text/javascript" src="./component/layer-v3.0.3/layer/layer.js"></script>
-    <link rel="stylesheet" href="./component/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link href="./css/default.css" rel="stylesheet">
-    <script type="text/javascript" src="./js/win10.js"></script>
-    <script type="text/javascript" src="./js/desktop.js"></script>
-    <style>
-        * {
-            font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei", 华文细黑, STHeiti, MingLiu
-        }
-        /*磁贴自定义样式*/
-        .win10-block-content-text {
-            line-height: 44px;
-            text-align: center;
-            font-size: 16px;
-        }
-    </style>
-    <script>
-        Win10.onReady(function () {
-
-            //设置壁纸
-            Win10.setBgUrl({
-                main:'./img/wallpapers/main.jpg',
-                mobile:'./img/wallpapers/mobile.jpg',
-            });
-
-            Win10.setAnimated([
-                'animated flip',
-                'animated bounceIn',
-            ], 0.01);
-            // setTimeout(function () {
-            //     Win10.newMsg('推荐全屏', '按下F11全屏以达到最佳视觉效果(点击进入)',function () {
-            //         Win10.enableFullScreen();
-            //     })
-            // }, 1500);
-
-            // setTimeout(function () {
-            //     layer.open({
-            //         type: 2,
-            //         title: '最新资讯',
-            //         area: ['300px', '380px'],
-            //         shade:0,
-            //         offset: 'rt',
-            //         content: 'http://win10ui.yuri2.cn/src/broadcast.html'
-            //     })
-            // },2000);
-
-            layer.open({
-                type: 2,
-                title: 'QQ群推荐',
-                area: ['300px', '200px'],
-                shade:0,
-                offset: 'rt',
-                content: './qq_group_recommend.html'
-            });
-
-            var content = $('#win10-shortcuts');
-            var h=parseInt($("#win10 #win10-shortcuts")[0].offsetHeight/100);
-            var x=0,y=0;
-
-            shortcuts.forEach(function(item){
-                var shortcut = $('<div class="shortcut animated flipInX"></div>');
-
-                shortcut.css({
-                    left:x*82+10,
-                    top:y*100+10,
-                });
-
-                y++;
-                if(y>=h){ 
-                    y=0; 
-                    x++;
-                }
-
-                if(item.mode == 'inside'){
-                    shortcut.attr('onclick','Win10.openUrl("' + item.url + '","<img class=\'icon\' src=\'' + item.icon + '\' />' + item.title + '")');
-                }else{
-                    shortcut.attr('onclick','window.open("' + item.url + '")');
-                }
-
-                shortcut.append('<img class="icon" src="' + item.icon + '"/>');
-                shortcut.append('<div class="title">' + item.name + '</div>');
-
-                content.append(shortcut);
-            });
-        });
-    </script>
+    <script type="text/javascript" src="./lib/jquery/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="./os/asgcos.js"></script>
+    <script type="text/javascript" src="./lib/layer-v3.0.3/layer/layer.js"></script> 
 </head>
 <body>
 <div id="win10">
     <div class="desktop">
         <div id="win10-shortcuts" class="shortcuts-hidden">
-            <!-- <div class="shortcut" onclick="Win10.openUrl('http://win10ui.yuri2.cn','<img class=\'icon\' src=\'./img/icon/win10.png\'/>Win10-UI官网')">
-                <img class="icon" src="./img/icon/win10.png"/>
-                <div class="title">Win10-UI官网</div>
-            </div>
-            <div class="shortcut" onclick="Win10.openUrl('https://yuri2.cn','<img class=\'icon\' src=\'./img/icon/blogger.png\'/>尤里2号的博客')">
-                <img class="icon" src="./img/icon/blogger.png"/>
-                <div class="title">Yuri2's Blog</div>
-            </div>
-            <div class="shortcut" onclick="Win10.openUrl('win10ui.yuri2.cn/src/doc.php','<img class=\'icon\' src=\'./img/icon/doc.png\'/>在线文档')">
-                <img class="icon" src="./img/icon/doc.png"/>
-                <div class="title">在线文档</div>
-            </div>
-            <div class="shortcut" onclick="window.open('https://github.com/yuri2peter/win10-ui')">
-                <img class="icon" src="./img/icon/github.png"/>
-                <div class="title">github</div>
-            </div>
-            <div class="shortcut" onclick="Win10.openUrl('https://www.oschina.net/p/win10-ui','<img class=\'icon\' src=\'./img/icon/kyzg.png\'/>开源中国（求支持~）')">
-                <img class="icon" src="./img/icon/kyzg.png"/>
-                <div class="title">开源中国</div>
-            </div>
-            <div class="shortcut" onclick="window.open('https://github.com/yuri2peter/win10-ui/archive/master.zip')">
-                <img class="icon" src="./img/icon/download.png"/>
-                <div class="title">快速获取</div>
-            </div>
-            <div class="shortcut" ondblclick='Win10.openUrl("./login.html","<i class=\"fa fa-user icon black-green\"></i>示例登录页")'>
-                <i class="fa fa-user icon black-green"></i>
-                <div class="title">示例登录页（双击）</div>
-            </div> -->
-            
-            <!-- <div class="shortcut" onclick="Win10.openUrl('http://blog.aoshiguchen.com','<img class=\'icon\' src=\'./img/icon/asgc_blog.ico\'/>傲世孤尘的博客')">
-                <img class="icon" src="./img/icon/asgc_blog.ico"/>
-                <div class="title">Asgc Blog</div>
-            </div>
-            <div class="shortcut" onclick="Win10.openUrl('https://www.oschina.net','<img class=\'icon\' src=\'./img/icon/kyzg.png\'/>开源中国')">
-                <img class="icon" src="./img/icon/kyzg.png"/>
-                <div class="title">开源中国</div>
-            </div> -->
         </div>
     </div>
     <div id="win10-menu" class="hidden">
