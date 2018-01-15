@@ -58,7 +58,6 @@ window.Win10 = {
         var btns=$("#win10_btn_group_middle>.btn");
         btns.css('width',('calc('+(1/this._countTask*100)+'% - 1px )'))
     },
-    _handleReady:function () {},
     _hideShortcut:function () {
         var that=$("#win10 #win10-shortcuts .shortcut");
         that.removeClass('animated flipInX');
@@ -68,6 +67,37 @@ window.Win10 = {
         var that=$("#win10 #win10-shortcuts .shortcut");
         that.removeClass('animated flipOutX');
         that.addClass('animated flipInX');
+    },
+    _loadShortcut: function(){
+        var content = $('#win10-shortcuts');
+        var h=parseInt($("#win10 #win10-shortcuts")[0].offsetHeight/100);
+        var x=0,y=0;
+
+        os.config.shortcuts.forEach(function(item){
+            var shortcut = $('<div class="shortcut animated flipInX"></div>');
+
+            shortcut.css({
+                left:x*82+10,
+                top:y*100+10,
+            });
+
+            y++;
+            if(y>=h){ 
+                y=0; 
+                x++;
+            }
+
+            if(item.mode == 'inside'){
+                shortcut.attr('onclick','Win10.openUrl("' + item.url + '","<img class=\'icon\' src=\'' + item.icon + '\' />' + item.title + '")');
+            }else{
+                shortcut.attr('onclick','window.open("' + item.url + '")');
+            }
+
+            shortcut.append('<img class="icon" src="' + item.icon + '"/>');
+            shortcut.append('<div class="title">' + item.name + '</div>');
+
+            content.append(shortcut);
+        });
     },
     _checkBgUrls:function () {
         var loaders=$('#win10>.img-loader');
@@ -219,7 +249,23 @@ window.Win10 = {
         Win10._renderBar();
     },
     init: function(){
+        //设置标题
+        os.setTile('ASGC桌面');
+        //设置图标
+        os.setIcon('os/win10/img/icon/favicon.ico');
+        //设置壁纸
+        Win10.setBgUrl({
+            main:'os/win10/img/wallpapers/main.jpg',
+            mobile:'os/win10/img/wallpapers/mobile.jpg',
+        });
+
+        Win10.setAnimated([
+            'animated flip',
+            'animated bounceIn',
+        ], 0.01);
+    
         Win10._init();
+        Win10._loadShortcut();
     },
     _init:function () {
 
@@ -372,9 +418,9 @@ window.Win10 = {
             }
         });
         //打广告
-        setTimeout(function () {
-            console.log(Win10.lang('本页由Win10-UI强力驱动\n更多信息：http://win10ui.yuri2.cn \nWin10-UI,轻松打造别具一格的后台界面 ','The page is strongly driven by Win10-UI.\nFor more info: http://win10ui.yuri2.cn.\n Win10-UI, easy to create a unique background interface.'))
-        },2000);
+        // setTimeout(function () {
+        //     console.log(Win10.lang('本页由Win10-UI强力驱动\n更多信息：http://win10ui.yuri2.cn \nWin10-UI,轻松打造别具一格的后台界面 ','The page is strongly driven by Win10-UI.\nFor more info: http://win10ui.yuri2.cn.\n Win10-UI, easy to create a unique background interface.'))
+        // },2000);
         //点击清空右键菜单
         $(document).click(function () {
             Win10._removeContextMenu();
@@ -410,7 +456,8 @@ window.Win10 = {
     menuOpen: function () {
         $("#win10-menu").addClass('opened');
         $("#win10-menu").removeClass('hidden');
-        this._hideShortcut();
+        //打开开始菜单时，不隐藏桌面图标
+        // this._hideShortcut();
         $(".win10-open-iframe").addClass('hide');
     },
     menuToggle: function () {
@@ -745,8 +792,5 @@ window.Win10 = {
             $(this).removeClass('active');
             layero.hide();
         })
-    },
-    onReady:function (handle) {
-        Win10._handleReady=handle;
     }
 };

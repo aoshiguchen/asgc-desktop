@@ -1,4 +1,4 @@
-var shortcuts = [
+os.config.shortcuts = [
 {	
 	mode: 'inside',
 	name: 'Asgc Blog',

@@ -1,5 +1,11 @@
 var os = {};
 
+//系统相关配置（桌面应用、菜单等）
+os.config = {};
+
+//系统API
+os.api = {};
+
 window.ASGCOS = os;
 
 //ASGCOS版本号
@@ -32,6 +38,17 @@ os.getAbsolutePathBySystemResource = function(path){
 }
 
 os.apbsr = os.getAbsolutePathBySystemResource;
+
+//根据路径描述符,获取系统资源
+os.getPath = function(desc){
+	if(!desc) return desc;
+
+	if(desc.startsWith('System:')){
+		return os.apbsr(desc.substr(7));
+	}
+
+	return desc;
+};
 
 //动态加载JS文件
 os.loadScript = function(url,callback){
@@ -97,20 +114,7 @@ os.setIcon = function(icon){
 
 os.onReady = {};
 os.onReady.win10 = function(){
-	//设置标题
-	os.setTile('ASGC桌面');
-	//设置图标
-	os.setIcon('os/win10/img/icon/favicon.ico');
-	//设置壁纸
-    Win10.setBgUrl({
-        main:'os/win10/img/wallpapers/main.jpg',
-        mobile:'os/win10/img/wallpapers/mobile.jpg',
-    });
-
-    Win10.setAnimated([
-        'animated flip',
-        'animated bounceIn',
-    ], 0.01);
+	Win10.init();
 
     layer.open({
         type: 2,
@@ -119,36 +123,6 @@ os.onReady.win10 = function(){
         shade:0,
         offset: 'rt',
         content: './qq_group_recommend.html'
-    });
-
-    var content = $('#win10-shortcuts');
-    var h=parseInt($("#win10 #win10-shortcuts")[0].offsetHeight/100);
-    var x=0,y=0;
-
-    shortcuts.forEach(function(item){
-        var shortcut = $('<div class="shortcut animated flipInX"></div>');
-
-        shortcut.css({
-            left:x*82+10,
-            top:y*100+10,
-        });
-
-        y++;
-        if(y>=h){ 
-            y=0; 
-            x++;
-        }
-
-        if(item.mode == 'inside'){
-            shortcut.attr('onclick','Win10.openUrl("' + item.url + '","<img class=\'icon\' src=\'' + item.icon + '\' />' + item.title + '")');
-        }else{
-            shortcut.attr('onclick','window.open("' + item.url + '")');
-        }
-
-        shortcut.append('<img class="icon" src="' + item.icon + '"/>');
-        shortcut.append('<div class="title">' + item.name + '</div>');
-
-        content.append(shortcut);
     });
 };
 
@@ -161,13 +135,12 @@ os.init = function(){
 		os.loadStyle('lib/font-awesome-4.7.0/css/font-awesome.min.css');
 		os.loadStyle('os/win10/css/default.css');
 
-		os.loadScript('os/win10/js/desktop.js');
-		os.loadScript('os/win10/js/win10.js',function(){
-			os.Win10 = Win10;
+		os.loadScript('os/win10/js/desktop.js',function(){
+			os.loadScript('os/win10/js/win10.js',function(){
+				os.Win10 = Win10;
 
-			Win10.init();
-
-		    os.onReady.win10();
+			    os.onReady.win10();
+			});
 		});
 	}
 	
